@@ -1,33 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, {useState} from 'react'
-import Header from '../../components/global/Header'
-import { bodyStyle, containerStyle } from '../../styles/global'
-import AddPlayerModal from '../../components/admin/addPlayer/AddPlayerModal'
-import MyButton from '../../components/global/MyButton'
+import { StyleSheet, Text, View, Alert, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import Header from '../../components/global/Header';
+import { bodyStyle, containerStyle } from '../../styles/global';
+import { useDispatch, useSelector } from 'react-redux';
+import { Colors } from '../../theme/Colors';
+import AddNewPlayer from '../../components/admin/addPlayer/AddNewPlayer';
 
-export default function AddPlayers() {
-  const [playerName, setPlayerName] = useState("");
-  const [players, setPlayers] = useState([]);
-  const [openModal, setOpenModal] = useState(false);
-
-  const addPlayerHandler = () => {
-    let tempArr = [];
-    tempArr.push({ name: playerName });
-    setPlayers([...players, ...tempArr])
-  };
-  
+export default function AddPlayers({ navigation }) {
   return (
     <>
-      <Header title='Add Player' back />
-      <View style={containerStyle}>
-        <View style={bodyStyle}>
-          <MyButton title='Add New Player' onPress={()=> setOpenModal(true)} />
-          <AddPlayerModal openModal={openModal} setOpenModal={setOpenModal} playerName={playerName}
-            setPlayerName={setPlayerName} onPressAdd={addPlayerHandler} />
-          </View>
+      <Header title="Add Player" back />
+      <View style={[containerStyle]}>
+        <AddNewPlayer navigation={navigation} />
       </View>
-      </>
-  )
+    </>
+  );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

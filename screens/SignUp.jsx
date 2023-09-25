@@ -15,39 +15,41 @@ import MyButton from '../components/global/MyButton';
 import logo from '../assets/logo.png';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../redux/action/userAction';
+import { register } from '../redux/action/userAction';
 import axios from 'axios';
 import { server } from '../server';
 import Toast from 'react-native-toast-message';
 
-export default function Login() {
+export default function SignUp({ route }) {
   const { loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const loginHandler = async () => {
+  const signUpHandler = async () => {
+    const myForm = new FormData();
+
+    myForm.append('name', name);
+    myForm.append('email', email);
+    myForm.append('password', password);
+
     try {
       dispatch({
-        type: 'loginRequest',
+        type: 'registerRequest',
       });
 
-      const { data } = await axios.post(
-        `${server}/user/login`,
-        {
-          email: 'user@gmail.com',
-          password: '123456',
+      const { data } = await axios.post(`${server}/user/signup`, myForm, {
+        headers: {
+          Accept: 'multipart/form-data',
+          'Content-Type': 'multipart/form-data',
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+        withCredentials: true,
+      });
 
       dispatch({
-        type: 'loginSuccess',
+        type: 'registerSuccess',
         payload: data.message,
       });
       Toast.show({
@@ -57,8 +59,9 @@ export default function Login() {
       });
     } catch (e) {
       if (!e.response) return alert('No internet connection');
+
       dispatch({
-        type: 'loginFail',
+        type: 'registerFail',
         payload: e.response.data.message,
       });
       Toast.show({
@@ -71,7 +74,7 @@ export default function Login() {
 
   return (
     <>
-      <Header title="Login" back />
+      <Header title="SIGNUP" back />
       <ScrollView style={[containerStyle, { flex: 1 }]}>
         <View style={[bodyStyle, { overflow: 'hidden' }]}>
           <View style={styles.logoView}>
@@ -80,6 +83,13 @@ export default function Login() {
           </View>
 
           <View style={styles.inputView}>
+            <MyTextInput
+              placeholder="Enter full name"
+              value={name}
+              onChangeText={setName}
+              style={styles.input}
+            />
+
             <MyTextInput
               placeholder="Enter email address"
               value={email}
@@ -96,20 +106,20 @@ export default function Login() {
             />
 
             <MyButton
-              title="LOG IN"
-              onPress={loginHandler}
+              title="SIGN UP"
+              onPress={signUpHandler}
               loading={loading}
               style={{ width: screenWidth - 80, marginTop: 50 }}
             />
 
             <View style={styles.signUpView}>
-              <Text style={{}}>Don't have an account</Text>
+              <Text style={{}}>Already have an account</Text>
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => navigation.navigate('signUp')}
+                onPress={() => navigation.navigate('login')}
               >
                 <Text style={{ color: Colors.blue, fontWeight: '500' }}>
-                  SIGN UP
+                  LOG IN
                 </Text>
               </TouchableOpacity>
             </View>
@@ -122,7 +132,7 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   logoView: {
-    marginVertical: 60,
+    marginVertical: 30,
     alignItems: 'center',
     justifyContent: 'center',
   },
