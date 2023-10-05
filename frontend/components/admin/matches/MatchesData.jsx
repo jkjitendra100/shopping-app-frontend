@@ -86,7 +86,7 @@ export default function MatchesData() {
               <View
                 style={{
                   height: 4,
-                  backgroundColor: Colors.grayLight,
+                  backgroundColor: Colors.gray,
                   margin: 10,
                   marginTop: 13,
                 }}

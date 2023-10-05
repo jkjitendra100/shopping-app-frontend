@@ -1,5 +1,6 @@
 import { asyncAwaitError } from "../middlewares/error.js";
 import { match } from "../models/match.js";
+import { Player } from "../models/player.js";
 import ErrorHandler from "../utils/error.js";
 
 export const newMatch = asyncAwaitError(async (req, res, next) => {
@@ -64,8 +65,27 @@ export const getMatchById = asyncAwaitError(async (req, res, next) => {
 	const { id } = req.params;
 	const data = await match.findById({ _id: id });
 
+	let team1PlayersList = [];
+	let team2PlayersList = [];
+
+	for (let i = 0; i < data?.team1Players?.length; i++) {
+		const player = await Player.findById(data?.team1Players[i]?.playerId);
+		team1PlayersList?.push(player);
+	}
+
+	for (let i = 0; i < data?.team2Players?.length; i++) {
+		const player = await Player.findById(data?.team2Players[i]?.playerId);
+		team2PlayersList?.push(player);
+	}
+
+	const dataResponse = {
+		data,
+		team1PlayersList,
+		team2PlayersList,
+	};
+
 	res.status(200).json({
 		success: true,
-		data: data,
+		data: dataResponse,
 	});
 });

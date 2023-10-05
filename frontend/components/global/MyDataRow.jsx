@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { Colors } from '../../theme/Colors';
 
-export default function MyDataRow({ label, value = 'Value' }) {
+export default function MyDataRow({ label, value = '---' }) {
   return (
     <View style={styles.dataRow}>
       <Text style={styles.key}>{label}</Text>
@@ -20,16 +21,21 @@ const styles = StyleSheet.create({
   },
 
   key: {
-    width: '25%',
-    fontWeight: '500',
+    width: '30%',
+    fontWeight: '600',
+    color: Colors.blue,
   },
 
   colon: {
     width: '5%',
     textAlign: 'center',
+    fontWeight: 'bold',
+    color: Colors.blue,
   },
 
   value: {
-    width: '70%',
+    width: '65%',
+    textTransform: 'capitalize',
+    color: Colors.indigo,
   },
 });

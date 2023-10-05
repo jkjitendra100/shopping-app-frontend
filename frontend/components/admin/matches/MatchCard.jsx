@@ -9,7 +9,7 @@ export default function MatchCard({
   matchTime,
   matchName,
   sportName,
-  onPress
+  onPress,
 }) {
   return (
     <TouchableOpacity style={[cardStyle, styles.container]} onPress={onPress}>
@@ -17,7 +17,11 @@ export default function MatchCard({
         numberOfLines={1}
         style={[
           styles.matchName,
-          { borderTopLeftRadius: 10, borderTopRightRadius: 10 },
+          {
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            borderBottomWidth: 2,
+          },
         ]}
       >
         {matchName}
@@ -55,7 +59,11 @@ export default function MatchCard({
         numberOfLines={1}
         style={[
           styles.matchName,
-          { borderBottomLeftRadius: 10, borderBottomRightRadius: 10 },
+          {
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
+            borderTopWidth: 2,
+          },
         ]}
       >
         {sportName}
@@ -67,16 +75,17 @@ export default function MatchCard({
 const styles = StyleSheet.create({
   container: {
     marginVertical: 5,
-    borderWidth: 1,
-    borderColor: Colors.grayLight,
-    elevation: 2,
+    borderWidth: 5,
+    borderColor: Colors.gray,
   },
+
   matchName: {
     padding: 5,
-    fontWeight: '500',
+    fontWeight: 'bold',
     textTransform: 'uppercase',
     margin: -10,
-    backgroundColor: Colors.grayLight,
+    borderColor: Colors.grayLight,
+    backgroundColor: Colors.grayLight
   },
 
   teamName: { fontWeight: '600', paddingVertical: 5, fontSize: 16 },

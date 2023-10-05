@@ -31,6 +31,8 @@ import NewMatch from './screens/adminPanel/NewMatch';
 import AdminContests from './screens/adminPanel/AdminContests';
 import AdminMatches from './screens/adminPanel/AdminMatches';
 import MatchDetails from './screens/MatchDetails';
+import CreateTeam from './screens/CreateTeam';
+import Payment from './screens/Payment';
 
 const HomeStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
@@ -63,6 +65,24 @@ function HomeStackScreens() {
         <HomeStack.Screen
           name="matchDetails"
           component={MatchDetails}
+          options={{
+            headerShown: false,
+            animation: 'slide_from_right',
+          }}
+        />
+
+        <HomeStack.Screen
+          name="createTeam"
+          component={CreateTeam}
+          options={{
+            headerShown: false,
+            animation: 'slide_from_right',
+          }}
+        />
+
+        <HomeStack.Screen
+          name="payment"
+          component={Payment}
           options={{
             headerShown: false,
             animation: 'slide_from_right',
@@ -257,7 +277,9 @@ export default function TabNavigator() {
             height: 55,
             paddingBottom: 6,
             position: 'absolute',
-            bottom: -0,
+            bottom: 0,
+            left: 0,
+            right: 0,
           },
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;

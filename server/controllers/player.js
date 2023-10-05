@@ -32,3 +32,16 @@ export const getAllPlayers = asyncAwaitError(async (req, res, next) => {
 		data: players,
 	});
 });
+
+export const getSinglePlayer = asyncAwaitError(async (req, res, next) => {
+	const { id } = req.params;
+
+	const data = await Player.findById(id);
+
+	if (!data) return next(new ErrorHandler("Invalid Id", 400));
+
+	res.status(200).json({
+		success: true,
+		data,
+	});
+});

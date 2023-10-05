@@ -3,6 +3,7 @@ import React from 'react';
 import { Colors } from '../../theme/Colors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MyDataRow from '../global/MyDataRow';
 
 export default function PlayerCard({
   name = 'Player Name',
@@ -13,9 +14,11 @@ export default function PlayerCard({
   selectable = false,
   onPressSelectable,
   check = false,
+  style,
+  user = false,
 }) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {selectable && (
         <TouchableOpacity style={styles.checkBox} onPress={onPressSelectable}>
           {check ? (
@@ -25,50 +28,42 @@ export default function PlayerCard({
           )}
         </TouchableOpacity>
       )}
-      <View style={{ flexDirection: 'row', gap: 10 }}>
-        <Text style={styles.key}>Name</Text>
-        <Text style={styles.colon}>:</Text>
-        <Text style={styles.value}>{name}</Text>
-      </View>
+      {!user && (
+        <View>
+          {name && <MyDataRow label="Name" value={name} />}
 
-      <View style={{ flexDirection: 'row', gap: 10 }}>
-        <Text style={styles.key}>Game</Text>
-        <Text style={styles.colon}>:</Text>
-        <Text style={styles.value}>{game}</Text>
-      </View>
+          {game && <MyDataRow label="Game" value={game} />}
 
-      <View style={{ flexDirection: 'row', gap: 10 }}>
-        <Text style={styles.key}>Team</Text>
-        <Text style={styles.colon}>:</Text>
-        <Text style={styles.value}>{team}</Text>
-      </View>
+          {team && <MyDataRow label="Team" value={team} />}
 
-      <View style={{ flexDirection: 'row', gap: 10 }}>
-        <Text style={styles.key}>Country</Text>
-        <Text style={styles.colon}>:</Text>
-        <Text style={styles.value}>{country}</Text>
-      </View>
+          {country && <MyDataRow label="Country" value={country} />}
 
-      <View style={{ flexDirection: 'row', gap: 10 }}>
-        <Text style={styles.key}>Created At</Text>
-        <Text style={styles.colon}>:</Text>
-        <Text style={styles.value}>{createdAt}</Text>
-      </View>
+          {createdAt && <MyDataRow label="Created At" value={createdAt} />}
+        </View>
+      )}
+
+      {user && (
+        <View>
+          <Text
+            style={{ fontSize: 16, fontWeight: '400', color: Colors.purple }}
+          >
+            {name}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 10,
     backgroundColor: Colors.white,
-    borderRadius: 10,
-    marginVertical: 10,
+    borderRadius: 5,
     flexDirection: 'column',
     gap: 10,
     borderWidth: 1,
     borderColor: Colors.grayLight,
-    elevation: 3,
   },
 
   checkBox: {
@@ -81,8 +76,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  key: { width: '25%', lineHeight: 14 },
-  colon: { width: '5%', lineHeight: 14 },
-  value: { width: '70%', lineHeight: 14 },
 });

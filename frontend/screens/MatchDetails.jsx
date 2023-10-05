@@ -1,24 +1,24 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import {
+  Alert,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
 import Header from '../components/global/Header';
-import { cardStyle, containerStyle } from '../styles/global';
-import MyDataRow from '../components/global/MyDataRow';
-import MyTitle from '../components/global/MyTitle';
+import MatchData from '../components/matchDetails/MatchData';
 
 export default function MatchDetails({ navigation, route }) {
-    const { id } = route?.params;
-    
-  useEffect(() => {}, []);
+  const { id } = route?.params;
+
   return (
     <>
       <Header back title="Match Details" />
-      <ScrollView style={containerStyle}>
-        <View style={[cardStyle, { marginTop: 10 }]}>
-          <MyTitle title="About Match" />
-          <MyDataRow label="Match Name" value="test" />
-        </View>
-        <Text>dj</Text>
-      </ScrollView>
+      <View style={{ flex: 1 }}>
+        <MatchData id={id} navigation={navigation} />
+      </View>
     </>
   );
 }
