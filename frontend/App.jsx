@@ -13,20 +13,21 @@ import { store } from './redux/store';
 import { StripeProvider } from '@stripe/stripe-react-native';
 
 export default function App() {
-  const stripeKey = 'cmkxocjddfjiodufdofhjf';
+  const publishableKey =
+    'pk_live_51NuYBCSHUsnA0lNLG5ENiBqJAuatOvhv8sSLgDpE5t7T9R1QZt6RejWbb5lfDNCEKZLfeEEtc5ObvTUJOjIw0ksu004C8YCchD';
   return (
     <NavigationContainer>
       <Provider store={store}>
-        {/* <StripeProvider
-          publishableKey={publishableKey}
-          merchantIdentifier="merchant.identifier" // required for Apple Pay
-          urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
-        > */}
         <KeyboardAvoidingView style={{ flex: 1 }}>
           <StatusBar backgroundColor={Colors.blue} />
-          <TabNavigator />
+          <StripeProvider
+            publishableKey={publishableKey}
+            merchantIdentifier="merchant.identifier" // required for Apple Pay
+            urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+          >
+            <TabNavigator />
+          </StripeProvider>
         </KeyboardAvoidingView>
-        {/* </StripeProvider> */}
       </Provider>
     </NavigationContainer>
     //{' '}

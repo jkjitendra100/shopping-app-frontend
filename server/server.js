@@ -5,16 +5,18 @@ import Stripe from "stripe";
 
 connectDB();
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+export const stripe = new Stripe(process.env.STRIPE_API_SECRET);
+
+console.log(process.env.STRIPE_API_SECRET);
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 app.listen(process.env.PORT, () => {
-  console.log(
-    `Server is listening on port ${process.env.PORT} in ${process.env.NODE_ENV} mode`
-  );
+	console.log(
+		`Server is listening on port ${process.env.PORT} in ${process.env.NODE_ENV} mode`
+	);
 });

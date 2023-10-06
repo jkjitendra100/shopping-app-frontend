@@ -258,11 +258,11 @@ export default function TabNavigator() {
           dispatch({
             type: 'myProfileFail',
           });
-          Toast.show({
-            type: 'error',
-            text1: 'Error',
-            text2: e?.response?.data?.message,
-          });
+          // Toast.show({
+          //   type: 'error',
+          //   text1: 'Error',
+          //   text2: e?.response?.data?.message,
+          // });
         });
     };
 

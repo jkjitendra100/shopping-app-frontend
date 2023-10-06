@@ -161,6 +161,7 @@ export default function MatchData({ id, navigation }) {
                     params: { matchDetails },
                   })
                 }
+                loading={loading}
               />
             </View>
 
@@ -176,7 +177,7 @@ export default function MatchData({ id, navigation }) {
               />
 
               {matchDetails?.team1PlayersList?.map((item, index) => (
-                <View style={{ marginLeft: 10 }}>
+                <View style={{ marginLeft: 10 }} key={index}>
                   <PlayerCard
                     name={`${index + 1}. ${item?.name}`}
                     user={true}
@@ -199,7 +200,7 @@ export default function MatchData({ id, navigation }) {
               />
 
               {matchDetails?.team2PlayersList?.map((item, index) => (
-                <View style={{ marginLeft: 10 }}>
+                <View style={{ marginLeft: 10 }} index={index}>
                   <PlayerCard
                     name={`${index + 1}. ${item?.name}`}
                     user={true}

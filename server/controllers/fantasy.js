@@ -1,42 +1,57 @@
 import { asyncAwaitError } from "../middlewares/error.js";
+import { Payment } from "../models/Payment.js";
 import { fantasy } from "../models/fantasy.js";
 import ErrorHandler from "../utils/error.js";
+import { stripe } from "../server.js";
 
 export const newFantasy = asyncAwaitError(async (req, res, next) => {
-	const { fantasyName, fantasyPrice, players, maxSelectablePlayers } = req.body;
-	const data = await fantasy.create({
-		fantasyName,
-		fantasyPrice,
-		maxSelectablePlayers,
-		players,
-	});
-
-	if (fantasyName?.toString()?.trim()?.length <= 3)
-		return next(new ErrorHandler("Fantasy name is too sort", 400));
-
-	if (fantasyPrice <= 0)
-		return next(new ErrorHandler("Please enter valid fantasy price", 400));
-
-	if (maxSelectablePlayers <= 0)
-		return next(
-			new ErrorHandler("Please enter valid number of selectable players", 400)
-		);
-
-	if (maxSelectablePlayers > players.length)
-		return next(
-			new ErrorHandler(
-				"The number of selectable players cannot be grater then entered players",
-				400
-			)
-		);
+	const { players, matchId, userId, amount } = req.body;
 
 	if (players?.length <= 0)
-		return next(new ErrorHandler("Please select valid players", 400));
+		return next(new ErrorHandler("Players required", 400));
+
+	if (amount < 0) return next(new ErrorHandler("Amount required", 400));
+
+	if (!userId) return next(new ErrorHandler("User Id required", 400));
+
+	if (!matchId) return next(new ErrorHandler("Match Id required", 400));
+
+	const data = await fantasy.create({
+		players,
+		matchId,
+		userId,
+		amount,
+	});
 
 	res.status(201).json({
 		success: true,
 		message: "Fantasy created successfully",
 		data,
+	});
+});
+
+export const processPayment = asyncAwaitError(async (req, res, next) => {
+	const { amount, userId, fantasyId } = req.body;
+
+	if (amount < 0) return next(new ErrorHandler("Amount required", 400));
+
+	const { client_secret } = await stripe.paymentIntents.create({
+		amount: Number(amount * 100),
+		currency: "inr",
+	});
+
+	const data = await Payment.create({
+		amount,
+		client_secret,
+		userId,
+		fantasyId,
+	});
+
+	res.status(201).json({
+		success: true,
+		message: "Order successfully received",
+		data,
+		client_secret,
 	});
 });
 
