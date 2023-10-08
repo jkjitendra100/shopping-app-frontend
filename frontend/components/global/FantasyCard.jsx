@@ -13,8 +13,9 @@ export default function FantasyCard({
   sportName,
   onPress,
   createdAt = Date.now(),
+  amount = 0,
+  paymentStatus = 'Failed',
 }) {
-  console.log(createdAt?.toString()?.substring(5).toLocaleString('en_IN'));
   return (
     <TouchableOpacity style={[cardStyle, styles.container]} onPress={onPress}>
       <View style={styles.header}>
@@ -87,6 +88,20 @@ export default function FantasyCard({
             {team2Country}
           </Text>
         </View>
+      </View>
+
+      <View style={{ flexDirection: 'row', gap: 10 }}>
+        <Text style={{ fontWeight: '600', color: Colors.black }}>
+          ₹{amount}/-
+        </Text>
+        <Text
+          style={{
+            fontWeight: '600',
+            color: paymentStatus === 'Succeeded' ? Colors.green : Colors.red,
+          }}
+        >
+          ({paymentStatus})
+        </Text>
       </View>
     </TouchableOpacity>
   );

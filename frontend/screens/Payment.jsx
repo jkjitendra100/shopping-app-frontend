@@ -17,8 +17,6 @@ export default function Payment({ navigation, route }) {
   const stripe = useStripe();
   const [loading, setLoading] = useState(false);
 
-  console.log(fantasy);
-
   const paymentHandler = async () => {
     try {
       setLoading(true);
@@ -28,7 +26,8 @@ export default function Payment({ navigation, route }) {
           amount: matchDetails?.data?.entryFee,
           userId: user?._id,
           fantasyId: fantasy?._id,
-          // matchId: fantasy
+          matchId: fantasy?.matchId,
+          // client_secret sending in DB from backend
         },
         {
           headers: { 'Content-Type': 'application/json' },
@@ -38,11 +37,12 @@ export default function Payment({ navigation, route }) {
 
       const init = await stripe.initPaymentSheet({
         paymentIntentClientSecret: data?.client_secret,
-        merchantDisplayName: 'My Fantasy Name',
+        merchantDisplayName: 'Fantasy App',
       });
 
       if (init.error) {
         setLoading(false);
+
         return Toast.show({
           type: 'error',
           text1: 'Error',
@@ -66,6 +66,7 @@ export default function Payment({ navigation, route }) {
       );
 
       if (paymentIntent.status === 'Succeeded') {
+        // console.log('paymentIntent', paymentIntent);
         storePaymentData(paymentIntent.id, paymentIntent.status);
       }
 
@@ -73,7 +74,7 @@ export default function Payment({ navigation, route }) {
     } catch (e) {
       setLoading(false);
       console.log('Payment error: ', e?.message);
-      if (!e?.response.data) return Alert.alert('No network available');
+      if (!e?.response?.data) return Alert.alert('No network available');
       Toast.show({
         type: 'error',
         text1: 'Error',
@@ -82,8 +83,34 @@ export default function Payment({ navigation, route }) {
     }
   };
 
-  const storePaymentData = (id, status) => {
-    console.log('ID: ', id, 'PaymentStatus: ', status);
+  const storePaymentData = async (paymentId, paymentStatus) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.patch(
+        `${server}/fantasy/${fantasy?._id}`,
+        {
+          paymentId,
+          paymentStatus,
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      );
+
+      setLoading(false);
+      Alert.alert('Successful', 'You have created your fantasy successfully', [
+        { text: 'OK', onPress: () => navigation.navigate('home') },
+      ]);
+    } catch (e) {
+      setLoading(false);
+      if (!e?.response?.data) return Alert.alert('No network available');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: e?.response?.data?.message,
+      });
+    }
   };
 
   return (

@@ -7,27 +7,27 @@ import { Carousel } from 'react-native-snap-carousel';
 const images = [
   {
     id: 'kfklejfr34r438r34uih',
-    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQebo_lujR57Mpy2VGSW7DYkrnkI7KrDezIgg&usqp=CAU',
+    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnhzajSYYdk3AddgsS-eY2UhDB4O1oMYeqHg&usqp=CAU',
   },
 
   {
     id: 'njsadher98eur8e',
-    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdHGCemc2EyKFTO1DK-57jefG0j0BbaJEBHQ&usqp=CAU',
+    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvPNYT2_XNUP_6n8AAFPAZgnJTrWoz_t-uVg&usqp=CAU',
   },
 
   {
     id: 'mlccnsdjowfiuweofew',
-    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC1JqR0ZYyYJRXzXDJ6nPqOVeB9kaPv2X72m7yHj7b7gsvGQtx9556exuEs9GmVH3-2oM&usqp=CAU',
+    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvPNYT2_XNUP_6n8AAFPAZgnJTrWoz_t-uVg&usqp=CAU',
   },
 
   {
     id: 'mfhyf9r8732e32y2o',
-    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCzxB6ZrgKSOa3RZoNYOOttHYSVJk2b5hx5w&usqp=CAU',
+    url: 'https://i.guim.co.uk/img/media/86a849b6f8c63432efcf03c45fe4dc71978a8f2f/0_94_2173_1303/master/2173.jpg?width=465&dpr=1&s=none',
   },
 
   {
     id: 'dfhdfiuyr893798e32uoi',
-    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCzxB6ZrgKSOa3RZoNYOOttHYSVJk2b5hx5w&usqp=CAU',
+    url: 'https://static.zawya.com/view/acePublic/alias/contentid/ODY3MmRjYjUtMTVjMy00/0/afp_33wu9lz-jpg.webp',
   },
 ];
 

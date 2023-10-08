@@ -3,6 +3,7 @@ import { Payment } from "../models/Payment.js";
 import { fantasy } from "../models/fantasy.js";
 import ErrorHandler from "../utils/error.js";
 import { stripe } from "../server.js";
+import { match } from "../models/match.js";
 
 export const newFantasy = asyncAwaitError(async (req, res, next) => {
 	const { players, matchId, userId, amount } = req.body;
@@ -31,7 +32,7 @@ export const newFantasy = asyncAwaitError(async (req, res, next) => {
 });
 
 export const processPayment = asyncAwaitError(async (req, res, next) => {
-	const { amount, userId, fantasyId } = req.body;
+	const { amount, userId, fantasyId, matchId } = req.body;
 
 	if (amount < 0) return next(new ErrorHandler("Amount required", 400));
 
@@ -45,6 +46,7 @@ export const processPayment = asyncAwaitError(async (req, res, next) => {
 		client_secret,
 		userId,
 		fantasyId,
+		matchId,
 	});
 
 	res.status(201).json({
@@ -74,5 +76,51 @@ export const getSingleFantasy = asyncAwaitError(async (req, res, next) => {
 	res.status(200).json({
 		success: true,
 		data,
+	});
+});
+
+export const updateFantasy = asyncAwaitError(async (req, res, next) => {
+	const { id } = req.params;
+	const { paymentId, paymentStatus } = req.body;
+
+	if (!id) return next(new ErrorHandler("Fantasy id required", 400));
+	if (!paymentId) return next(new ErrorHandler("Payment id required", 400));
+	if (!paymentStatus)
+		return next(new ErrorHandler("Payment status required", 400));
+
+	const update = {
+		$set: {
+			paymentId,
+			paymentStatus,
+			paymentTime: Date.now(),
+		},
+	};
+
+	const data = await fantasy.findByIdAndUpdate(id, update, { new: true });
+
+	res.status(200).json({
+		success: true,
+		data,
+	});
+});
+
+export const getMyFantasies = asyncAwaitError(async (req, res, next) => {
+	const { userId } = req.params;
+
+	const data = await fantasy.find({ userId: userId });
+
+	const responseData = [];
+	for (let i = 0; i < data.length; i++) {
+		let fantasyData = data[i];
+		let matchData = await match.findById(data[i]?.matchId);
+
+		responseData?.push({ fantasyData, matchData });
+	}
+
+	if (data == null) return next(new ErrorHandler("Invalid fantasy id", 400));
+
+	res.status(200).json({
+		success: true,
+		data: responseData,
 	});
 });

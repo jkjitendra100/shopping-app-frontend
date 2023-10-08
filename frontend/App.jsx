@@ -13,8 +13,11 @@ import { store } from './redux/store';
 import { StripeProvider } from '@stripe/stripe-react-native';
 
 export default function App() {
-  const publishableKey =
+  const publishableKey_Live =
     'pk_live_51NuYBCSHUsnA0lNLG5ENiBqJAuatOvhv8sSLgDpE5t7T9R1QZt6RejWbb5lfDNCEKZLfeEEtc5ObvTUJOjIw0ksu004C8YCchD';
+
+  const publishableKey =
+    'pk_test_51NuYBCSHUsnA0lNLjIVRcntqQG6uF1iDeAoKnMiHpI6XGDJsEYAbwh7MdiBfZkJFZChP8WIVKGgopoONsi50OdD400ZWDE8BMC';
   return (
     <NavigationContainer>
       <Provider store={store}>

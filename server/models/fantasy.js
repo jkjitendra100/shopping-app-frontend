@@ -9,7 +9,7 @@ const schema = new mongoose.Schema({
 
 	matchId: {
 		type: mongoose.Schema.Types.ObjectId,
-		required: [false, "Match id required"],
+		required: [true, "Match id required"],
 	},
 
 	amount: {
@@ -17,14 +17,22 @@ const schema = new mongoose.Schema({
 		require: [true, "amount required"],
 	},
 
-	paymentStatus: {
-		type: Boolean,
-		default: false,
-	},
-
 	userId: {
 		type: mongoose.Schema.Types.ObjectId,
-		require: [false, "User id required"],
+		require: [true, "User id required"],
+	},
+
+	paymentId: {
+		type: String,
+	},
+
+	paymentStatus: {
+		type: String,
+		default: "Failed",
+	},
+
+	paymentTime: {
+		type: Date,
 	},
 
 	createdAt: {
