@@ -13,7 +13,7 @@ import {
 // Login function
 export const login = asyncAwaitError(async (req, res, next) => {
 	const { email, password } = req.body;
-	await User.findOne({ email: email.toLowerCase()})
+	await User.findOne({ email: { $regex: new RegExp(email, "i") } })
 		.select("+password")
 		.then(async (user) => {
 			if (!user) return next(new ErrorHandler("User doesn't exist!", 400));
@@ -47,8 +47,6 @@ export const signup = asyncAwaitError(async (req, res, next) => {
 		if (user) return next(new ErrorHandler("User already exists!", 400));
 	});
 
-	console.log("Hello");
-
 	let avatar = undefined;
 	if (req.file) {
 		const file = getDataUri(req.file);
@@ -63,7 +61,7 @@ export const signup = asyncAwaitError(async (req, res, next) => {
 	const user = await User.create({
 		// avatar,
 		name,
-		email: email?.toLowercase(),
+		email,
 		mobile,
 		password,
 		// address1,

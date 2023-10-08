@@ -64,8 +64,6 @@ export default function SelectPlayerModal({
     setSync((state) => state + 1);
   }, []);
 
-  console.log(sync);
-
   return (
     <Modal visible={visible} transparent={true} animationType="slide">
       <View style={styles.container} />
@@ -98,6 +96,7 @@ export default function SelectPlayerModal({
                 e?.playerId === item?._id ? true : false
               )}
               onPressSelectable={() => handleOnPressCheckBox(item?._id)}
+              style={{ marginVertical: 5 }}
             />
           ))}
         </ScrollView>

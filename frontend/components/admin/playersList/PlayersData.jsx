@@ -4,9 +4,9 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import axios from 'axios';
 import { server } from '../../../server';
 import PlayerCard from '../../players/PlayerCard';
-import Header from '../../global/Header';
-import { containerStyle } from '../../../styles/global';
 import Loading from '../../global/Loading';
+import { bodyStyle, containerStyle } from '../../../styles/global';
+import { countriesList } from '../../../jsonFiles/countriesList';
 
 export default function PlayersData() {
   const [playersList, setPlayersList] = useState([]);
@@ -38,16 +38,22 @@ export default function PlayersData() {
 
   return (
     <>
-      <View>
-        <ScrollView>
-          {playersList.map((item) => (
-            <View key={item?._id}>
+      <View style={containerStyle}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {playersList?.map((item) => (
+            <View key={item?._id} style={{ marginVertical: 5 }}>
               <PlayerCard
                 name={item?.name}
-                team={item?.team}
                 game={item?.game}
-                country={item?.country}
-                createdAt={item?.createdAt?.toLocaleString('en-In')}
+                country={
+                  countriesList?.find((e) => e?.isoCode === item?.country)?.name
+                }
+                createdAt={new Date(
+                  Date.parse(item?.createdAt)
+                )?.toLocaleDateString('en-In')}
+                flag={
+                  countriesList?.find((e) => e?.isoCode === item.country)?.flag
+                }
               />
             </View>
           ))}

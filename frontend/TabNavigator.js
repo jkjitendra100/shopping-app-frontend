@@ -33,6 +33,7 @@ import AdminMatches from './screens/adminPanel/AdminMatches';
 import MatchDetails from './screens/MatchDetails';
 import CreateTeam from './screens/CreateTeam';
 import Payment from './screens/Payment';
+import MyFantasies from './screens/MyFantasies';
 
 const HomeStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
@@ -93,15 +94,15 @@ function HomeStackScreens() {
   );
 }
 
-function PlayerStackScreens() {
+function MyFantasiesStack() {
   return (
     <PlayerStack.Navigator
       screenOptions={{ contentStyle: { marginBottom: 55 } }}
     >
       <PlayerStack.Group>
         <PlayerStack.Screen
-          name="players"
-          component={Players}
+          name="myFantasies"
+          component={MyFantasies}
           options={{
             headerShown: false,
             animation: 'fade_from_bottom',
@@ -294,10 +295,16 @@ export default function TabNavigator() {
                 return <FontAwesome name={iconName} size={25} color={color} />;
 
               case 'Login':
-                iconName = focused ? 'login' : 'login';
-                return <AntDesign name={iconName} size={25} color={color} />;
+                iconName = focused ? 'login-variant' : 'login-variant';
+                return (
+                  <MaterialCommunityIcons
+                    name={iconName}
+                    size={25}
+                    color={color}
+                  />
+                );
 
-              case 'Players':
+              case 'My Fantasies':
                 iconName = focused ? 'gamepad' : 'gamepad-outline';
                 return (
                   <MaterialCommunityIcons
@@ -329,8 +336,8 @@ export default function TabNavigator() {
             }}
           />
           <Tab.Screen
-            name="Players"
-            component={PlayerStackScreens}
+            name="My Fantasies"
+            component={MyFantasiesStack}
             options={{
               headerShown: false,
               animation: 'fade_from_bottom',

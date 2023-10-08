@@ -11,11 +11,6 @@ const schema = new mongoose.Schema({
 		require: false,
 	},
 
-	team: {
-		type: String,
-		require: false,
-	},
-
 	country: {
 		type: String,
 		require: false,

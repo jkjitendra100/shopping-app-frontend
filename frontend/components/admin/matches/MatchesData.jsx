@@ -12,8 +12,8 @@ import Toast from 'react-native-toast-message';
 import MatchCard from './MatchCard';
 import { Country } from 'country-state-city';
 import Loading from '../../global/Loading';
-import { Colors } from '../../../theme/Colors';
 import { useNavigation } from '@react-navigation/native';
+import { countriesList } from '../../../jsonFiles/countriesList';
 
 export default function MatchesData() {
   const navigation = useNavigation();
@@ -51,6 +51,8 @@ export default function MatchesData() {
     setSync((state) => state + 1);
   }, [sync]);
 
+  let tempVar = 'assets/countries/pakistan.png';
+
   return (
     <View style={{ flex: 1, marginHorizontal: 10 }}>
       <ScrollView
@@ -60,7 +62,7 @@ export default function MatchesData() {
         }
       >
         {matches?.map((item, index) => (
-          <View>
+          <>
             <MatchCard
               key={item?._id}
               matchName={item?.matchName}
@@ -69,30 +71,23 @@ export default function MatchesData() {
               )}\n${new Date(item?.matchTime)?.toLocaleTimeString('en-In')}`}
               sportName={item?.sportName}
               team1Country={
-                Country?.getAllCountries()?.find(
+                countriesList?.find(
                   (e) => e.isoCode === item?.team1Country
                 )?.name
               }
               team2Country={
-                Country?.getAllCountries()?.find(
+                countriesList?.find(
                   (e) => e.isoCode === item?.team2Country
                 )?.name
               }
               onPress={() =>
-                navigation.navigate('matchDetails', { id: item?._id })
+                navigation.navigate('matchDetails', { matchData: item })
               }
+              team1Flag={require(`../../../${tempVar}`)}
+              team2Flag={require(`../../../${tempVar}`)}
+              createdAt={Date.parse(item?.createdAt)}
             />
-            {index !== matches.length - 1 && (
-              <View
-                style={{
-                  height: 4,
-                  backgroundColor: Colors.gray,
-                  margin: 10,
-                  marginTop: 13,
-                }}
-              />
-            )}
-          </View>
+          </>
         ))}
       </ScrollView>
       {loading && <Loading />}

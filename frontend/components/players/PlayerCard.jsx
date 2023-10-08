@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import React from 'react';
 import { Colors } from '../../theme/Colors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -16,6 +16,7 @@ export default function PlayerCard({
   check = false,
   style,
   user = false,
+  flag,
 }) {
   return (
     <View style={[styles.container, style]}>
@@ -24,21 +25,34 @@ export default function PlayerCard({
           {check ? (
             <AntDesign name="checksquare" size={25} color={Colors.blue} />
           ) : (
-            <Ionicons name="square-outline" size={25} />
+            <Ionicons name="square-outline" size={25} color={Colors.blue} />
           )}
         </TouchableOpacity>
       )}
       {!user && (
-        <View>
+        <View style={{ position: 'relative' }}>
+          {flag && (
+            <Image
+              style={{
+                width: 40,
+                height: 40,
+                position: 'absolute',
+                bottom: -5,
+                right: -5,
+                resizeMode: 'contain',
+              }}
+              source={flag}
+            />
+          )}
+
           {name && <MyDataRow label="Name" value={name} />}
 
-          {game && <MyDataRow label="Game" value={game} />}
-
-          {team && <MyDataRow label="Team" value={team} />}
+          {game && <MyDataRow label="Sport" value={game} />}
 
           {country && <MyDataRow label="Country" value={country} />}
-
-          {createdAt && <MyDataRow label="Created At" value={createdAt} />}
+          {createdAt && (
+            <Text style={styles.createdAt}>Added On: {createdAt}</Text>
+          )}
         </View>
       )}
 
@@ -64,6 +78,7 @@ const styles = StyleSheet.create({
     gap: 10,
     borderWidth: 1,
     borderColor: Colors.grayLight,
+    elevation: 2,
   },
 
   checkBox: {
@@ -75,5 +90,12 @@ const styles = StyleSheet.create({
     height: 35,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  createdAt: {
+    fontSize: 12,
+    color: Colors.rose,
+    textAlign: 'left',
+    marginLeft: 10,
   },
 });

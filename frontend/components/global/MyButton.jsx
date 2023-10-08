@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: Colors.blue,
     borderRadius: 100,
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
     minWidth: 100,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontWeight: 'bold',
     textTransform: 'uppercase',
+    textAlign: 'center',
   },
 
   loading: {

@@ -1,6 +1,6 @@
 import { StyleSheet, ScrollView, View, RefreshControl } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import FantasyCard from './FantasyCard';
+import FantasyCard from '../global/FantasyCard';
 import axios from 'axios';
 import { server } from '../../server';
 import { useNavigation } from '@react-navigation/native';

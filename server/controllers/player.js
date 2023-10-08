@@ -4,12 +4,12 @@ import ErrorHandler from "../utils/error.js";
 
 // Add new player
 export const addPlayer = asyncAwaitError(async (req, res, next) => {
-	const { name, game, team, country } = req.body;
+	const { name, game, country } = req.body;
 
 	const player = await Player.create({
 		name,
 		game,
-		team,
+		// team,
 		country,
 	});
 

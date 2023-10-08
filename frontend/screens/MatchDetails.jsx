@@ -9,15 +9,16 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import Header from '../components/global/Header';
 import MatchData from '../components/matchDetails/MatchData';
+import { bodyStyle } from '../styles/global';
 
 export default function MatchDetails({ navigation, route }) {
-  const { id } = route?.params;
+  const { matchData } = route?.params;
 
   return (
     <>
       <Header back title="Match Details" />
-      <View style={{ flex: 1 }}>
-        <MatchData id={id} navigation={navigation} />
+      <View style={[bodyStyle, { flex: 1 }]}>
+        <MatchData matchDetails={matchData} navigation={navigation} />
       </View>
     </>
   );

@@ -9,7 +9,7 @@ export default function NewMatch() {
   return (
     <>
       <Header back title="Add New Match" />
-      <View style={containerStyle}>
+      <View style={[containerStyle, { flex: 1 }]}>
         <NewMatchForm
           selectedPlayerModal={selectedPlayerModal}
           setSelectedPlayerModal={setSelectedPlayerModal}

@@ -4,7 +4,7 @@ import MyTitle from '../global/MyTitle';
 import { Colors } from '../../theme/Colors';
 import { dataRowStyle } from '../../styles/global';
 import MyDataRow from '../global/MyDataRow';
-import FantasyCard from '../home/FantasyCard';
+import FantasyCard from '../global/FantasyCard';
 
 export default function MyFantasy() {
   return (

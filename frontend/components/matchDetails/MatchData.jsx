@@ -5,21 +5,22 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { cardStyle, containerStyle } from '../../styles/global';
+import { cardStyle } from '../../styles/global';
 import MyDataRow from '../../components/global/MyDataRow';
 import MyTitle from '../../components/global/MyTitle';
 import axios from 'axios';
 import { server } from '../../server';
-import Loading from '../../components/global/Loading';
 import { Colors } from '../../theme/Colors';
 import { Country } from 'country-state-city';
 import MyButton from '../global/MyButton';
 import PlayerCard from '../players/PlayerCard';
+import { countriesList } from '../../jsonFiles/countriesList';
 
-export default function MatchData({ id, navigation }) {
-  const [matchDetails, setMatchDetails] = useState('');
+export default function MatchData({ matchDetails, navigation }) {
+  const [match, setMatch] = useState('');
   //
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -31,7 +32,7 @@ export default function MatchData({ id, navigation }) {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `${server}/match/${id}`,
+        url: `${server}/match/${matchDetails?._id}`,
         headers: {},
       };
 
@@ -40,7 +41,7 @@ export default function MatchData({ id, navigation }) {
         .then((res) => {
           setLoading(false);
           setRefreshing(false);
-          setMatchDetails(res?.data?.data);
+          setMatch(res?.data?.data);
         })
         .catch((e) => {
           setLoading(false);
@@ -51,7 +52,7 @@ export default function MatchData({ id, navigation }) {
     };
 
     getData();
-  }, [sync]);
+  }, [sync, matchDetails?._id]);
 
   const onRefresh = useCallback(() => {
     setSync((state) => state + 1);
@@ -59,179 +60,198 @@ export default function MatchData({ id, navigation }) {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
+      <View style={{ marginVertical: 10 }}>
         <View>
           <View style={cardStyle}>
-            <Text
-              style={{
-                textTransform: 'uppercase',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                fontSize: 24,
-                marginTop: 0,
-                color: Colors.indigo,
-                marginBottom: 10,
-              }}
-            >
-              {matchDetails?.data?.matchName}
-            </Text>
-
-            {/* Countries Name */}
-            <View>
-              <Text
-                style={[
-                  styles.countryName,
+            <Text style={styles.matchName}>{matchDetails?.matchName}</Text>
+            <View style={styles.countryView}>
+              <View style={styles.flagView}>
+                <Image
+                  style={{ width: 75, height: 75 }}
+                  source={
+                    countriesList?.find(
+                      (e) => e?.isoCode === matchDetails?.team1Country
+                    )?.flag
+                  }
+                />
+                <Text style={styles.countryName}>
                   {
-                    color: Colors.rose,
-                  },
-                ]}
-              >
-                {
-                  Country.getAllCountries()?.find(
-                    (e) => e?.isoCode === matchDetails?.data?.team1Country
-                  )?.name
-                }
-              </Text>
-
-              <Text style={styles.vs}>Vs</Text>
-
+                    Country.getAllCountries()?.find(
+                      (e) => e?.isoCode === matchDetails?.team1Country
+                    )?.name
+                  }
+                </Text>
+              </View>
               <Text
-                style={[
-                  styles.countryName,
-                  {
-                    color: Colors.green,
-                  },
-                ]}
-              >
-                {
-                  Country.getAllCountries()?.find(
-                    (e) => e?.isoCode === matchDetails?.data?.team2Country
-                  )?.name
-                }
-              </Text>
-            </View>
-
-            {/* Border */}
-            <View
-              style={{
-                height: 2,
-                backgroundColor: Colors.gray,
-                marginHorizontal: -10,
-                marginVertical: 20,
-              }}
-            />
-
-            <View style={cardStyle}>
-              <MyDataRow label="Sport" value={matchDetails?.data?.sportName} />
-              <MyDataRow
-                label="Match Time"
-                value={new Date(matchDetails?.data?.matchTime)?.toLocaleString(
-                  'en-In'
-                )}
-              />
-              <MyDataRow
-                label="Entry Fee"
-                value={matchDetails?.data?.entryFee}
-              />
-              <MyDataRow
-                label="Max Team Players"
-                value={matchDetails?.data?.maxSelectablePlayers}
-              />
-
-              <MyDataRow
-                label="Team 1 Players"
-                value={matchDetails?.data?.team1Players?.length}
-              />
-
-              <MyDataRow
-                label="Team 2 Players"
-                value={matchDetails?.data?.team2Players?.length}
-              />
-
-              <MyButton
-                title="Create My Team"
-                style={{ marginTop: 20 }}
-                onPress={() =>
-                  navigation?.navigate('createTeam', {
-                    params: { matchDetails },
-                  })
-                }
-                loading={loading}
-              />
-            </View>
-
-            {/* Mapping Players */}
-            <View style={[cardStyle, { marginTop: 10 }]}>
-              <MyTitle
-                title={`${
-                  Country.getAllCountries()?.find(
-                    (e) => e?.isoCode === matchDetails?.data?.team1Country
-                  )?.name
-                } Players`}
-                style={{ textDecorationLine: 'underline', fontWeight: 'bold' }}
-              />
-
-              {matchDetails?.team1PlayersList?.map((item, index) => (
-                <View style={{ marginLeft: 10 }} key={index}>
-                  <PlayerCard
-                    name={`${index + 1}. ${item?.name}`}
-                    user={true}
-                    style={{ borderWidth: 0, marginVertical: -5 }}
-                  />
-                </View>
-              ))}
-
-              <MyTitle
-                title={`${
-                  Country.getAllCountries()?.find(
-                    (e) => e?.isoCode === matchDetails?.data?.team2Country
-                  )?.name
-                } Players`}
                 style={{
-                  textDecorationLine: 'underline',
+                  marginTop: 20,
+                  fontSize: 25,
                   fontWeight: 'bold',
-                  marginTop: 10,
+                  color: Colors.rose,
                 }}
-              />
-
-              {matchDetails?.team2PlayersList?.map((item, index) => (
-                <View style={{ marginLeft: 10 }} index={index}>
-                  <PlayerCard
-                    name={`${index + 1}. ${item?.name}`}
-                    user={true}
-                    style={{ borderWidth: 0, marginVertical: -5 }}
-                  />
-                </View>
-              ))}
+              >
+                Vs
+              </Text>
+              <View style={styles.flagView}>
+                <Image
+                  style={{ width: 75, height: 75 }}
+                  source={
+                    countriesList?.find(
+                      (e) => e?.isoCode === matchDetails?.team2Country
+                    )?.flag
+                  }
+                />
+                <Text style={styles.countryName}>
+                  {
+                    Country.getAllCountries()?.find(
+                      (e) => e?.isoCode === matchDetails?.team2Country
+                    )?.name
+                  }
+                </Text>
+              </View>
             </View>
           </View>
 
-          {/* Loading */}
-          {loading && <Loading />}
+          {/* Border */}
+          <View
+            style={{
+              height: 2,
+              backgroundColor: Colors.gray,
+              marginHorizontal: -10,
+              marginVertical: 20,
+            }}
+          />
+
+          <View style={cardStyle}>
+            <MyDataRow label="Sport" value={matchDetails?.sportName} />
+            <MyDataRow
+              label="Match Time"
+              value={new Date(matchDetails?.matchTime)?.toLocaleString('en-In')}
+            />
+            <MyDataRow label="Entry Fee" value={matchDetails?.entryFee} />
+            <MyDataRow
+              label="Max Team Players"
+              value={matchDetails?.maxSelectablePlayers}
+            />
+
+            <MyDataRow
+              label="Team 1 Players"
+              value={matchDetails?.team1Players?.length}
+            />
+
+            <MyDataRow
+              label="Team 2 Players"
+              value={matchDetails?.team2Players?.length}
+            />
+
+            <MyButton
+              title="Create My Team"
+              style={{ marginTop: 20 }}
+              onPress={() =>
+                navigation?.navigate('createTeam', { matchDetails: match })
+              }
+              loading={loading}
+            />
+          </View>
+
+          {/* Mapping Players */}
+          <View style={[cardStyle, { marginTop: 10 }]}>
+            <MyTitle
+              title={`${
+                Country.getAllCountries()?.find(
+                  (e) => e?.isoCode === matchDetails?.team1Country
+                )?.name
+              } Players`}
+              style={{ textDecorationLine: 'underline', fontWeight: 'bold' }}
+            />
+
+            {match?.team1PlayersList?.map((item, index) => (
+              <View style={{ marginLeft: 10 }} key={index}>
+                <PlayerCard
+                  name={`${index + 1}. ${item?.name}`}
+                  user={true}
+                  style={{ borderWidth: 0, marginVertical: -5 }}
+                />
+              </View>
+            ))}
+
+            <MyTitle
+              title={`${
+                Country.getAllCountries()?.find(
+                  (e) => e?.isoCode === matchDetails?.team2Country
+                )?.name
+              } Players`}
+              style={{
+                textDecorationLine: 'underline',
+                fontWeight: 'bold',
+                marginTop: 10,
+              }}
+            />
+
+            {match?.team2PlayersList?.map((item, index) => (
+              <View style={{ marginLeft: 10 }} index={index}>
+                <PlayerCard
+                  name={`${index + 1}. ${item?.name}`}
+                  user={true}
+                  style={{ borderWidth: 0, marginVertical: -5 }}
+                />
+              </View>
+            ))}
+          </View>
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  countryName: {
-    textAlign: 'center',
-    fontWeight: 'bold',
+  matchName: {
     fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
     textTransform: 'uppercase',
+    color: Colors.indigo,
+    textDecorationLine: 'underline',
+  },
+  countryView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 5,
   },
 
-  vs: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: Colors.grayDark,
-    fontSize: 16,
-    marginVertical: 10,
+  flagView: {
+    flexDirection: 'column',
+    width: '40%',
+    alignItems: 'center',
   },
+
+  countryName: {
+    color: Colors.grayDark,
+    textTransform: 'uppercase',
+    marginTop: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  // countryName: {
+  //   textAlign: 'center',
+  //   fontWeight: 'bold',
+  //   fontSize: 20,
+  //   textTransform: 'uppercase',
+  // },
+
+  // vs: {
+  //   textAlign: 'center',
+  //   fontWeight: 'bold',
+  //   color: Colors.grayDark,
+  //   fontSize: 16,
+  //   marginVertical: 10,
+  // },
 });

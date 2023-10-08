@@ -14,10 +14,10 @@ export const sportsList = [
   //   slug: 'pato',
   // },
 
-  {
-    name: 'Kabaddi',
-    slug: 'kabaddi',
-  },
+  // {
+  //   name: 'Kabaddi',
+  //   slug: 'kabaddi',
+  // },
 
   // {
   //   name: 'Archery',
@@ -29,15 +29,15 @@ export const sportsList = [
   //   slug: 'capoeira',
   // },
 
-  {
-    name: 'Weightlifting',
-    slug: 'weightlifting',
-  },
+  // {
+  //   name: 'Weightlifting',
+  //   slug: 'weightlifting',
+  // },
 
-  {
-    name: 'Ice hockey',
-    slug: 'iceHockey',
-  },
+  // {
+  //   name: 'Ice hockey',
+  //   slug: 'iceHockey',
+  // },
 
   // {
   //   name: 'Chilean rodeo',
@@ -49,10 +49,10 @@ export const sportsList = [
   //   slug: 'pingPong',
   // },
 
-  {
-    name: 'Baseball',
-    slug: 'baseball',
-  },
+  // {
+  //   name: 'Baseball',
+  //   slug: 'baseball',
+  // },
 
   // {
   //   name: 'Tejo',
@@ -69,25 +69,25 @@ export const sportsList = [
   //   slug: 'waterPolo',
   // },
 
-  {
-    name: 'Field Hockey',
-    slug: 'fieldHockey',
-  },
+  // {
+  //   name: 'Field Hockey',
+  //   slug: 'fieldHockey',
+  // },
 
-  {
-    name: 'Badminton',
-    slug: 'badminton',
-  },
+  // {
+  //   name: 'Badminton',
+  //   slug: 'badminton',
+  // },
 
-  {
-    name: 'Basketball',
-    slug: 'basketball',
-  },
+  // {
+  //   name: 'Basketball',
+  //   slug: 'basketball',
+  // },
 
-  {
-    name: 'Wrestling',
-    slug: 'wrestling',
-  },
+  // {
+  //   name: 'Wrestling',
+  //   slug: 'wrestling',
+  // },
 
   // {
   //   name: 'Sumo Wrestling',
@@ -153,11 +153,6 @@ export const sportsList = [
   //   name: 'Golf',
   //   slug: 'golf',
   // },
-
-  {
-    name: 'Volleyball',
-    slug: 'volleyball',
-  },
 
   // {
   //   name: 'Alpine Skiing',

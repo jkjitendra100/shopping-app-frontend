@@ -21,6 +21,7 @@ import { inputStyle } from '../../../styles/global';
 import DatePicker from 'react-native-date-picker';
 import { sportsList } from '../../../jsonFiles/sportsList';
 import MyTextInput from '../../global/MyTextInput';
+import { countriesList } from '../../../jsonFiles/countriesList';
 
 export default function NewMatchForm() {
   const navigation = useNavigation();
@@ -132,7 +133,7 @@ export default function NewMatchForm() {
                 value={''}
                 style={{ fontSize: 14 }}
               />
-              {Country.getAllCountries()
+              {countriesList
                 ?.filter((e) => e?.isoCode !== team2Country)
                 ?.map((item) => (
                   <Picker.Item
@@ -145,18 +146,14 @@ export default function NewMatchForm() {
             </Picker>
           </View>
 
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.selectPlayerBtn}
+          <MyButton
+            title="Select Team 1 Players"
             onPress={() => setTeam1PlayersModal(true)}
-          >
-            <Text style={{ color: Colors.blue, textAlign: 'center' }}>
-              Select Team 1 Players
-            </Text>
-          </TouchableOpacity>
+            style={{ marginHorizontal: 20, backgroundColor: Colors.fuchsia }}
+          />
 
           <MyTitle
-            style={{ color: Colors.rose, textAlign: 'center', marginTop: 10 }}
+            style={{ color: Colors.fuchsia, textAlign: 'center', marginTop: 10 }}
             title={`No of Players Selected: ${team1Players.length}`}
           />
         </View>
@@ -176,7 +173,7 @@ export default function NewMatchForm() {
                 value={''}
                 style={{ fontSize: 14 }}
               />
-              {Country.getAllCountries()
+              {countriesList
                 ?.filter((e) => e?.isoCode !== team1Country)
                 ?.map((item) => (
                   <Picker.Item
@@ -189,7 +186,7 @@ export default function NewMatchForm() {
             </Picker>
           </View>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             activeOpacity={0.7}
             style={styles.selectPlayerBtn}
             onPress={() => setTeam2PlayersModal(true)}
@@ -197,9 +194,16 @@ export default function NewMatchForm() {
             <Text style={{ color: Colors.blue, textAlign: 'center' }}>
               Select Team 2 Players
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+
+          <MyButton
+            title="Select Team 2 Players"
+            onPress={() => setTeam2PlayersModal(true)}
+            style={{ marginHorizontal: 20, backgroundColor: Colors.green }}
+          />
+
           <MyTitle
-            style={{ color: Colors.rose, textAlign: 'center', marginTop: 10 }}
+            style={{ color: Colors.green, textAlign: 'center', marginTop: 10 }}
             title={`No of Players Selected: ${team2Players.length}`}
           />
         </View>
@@ -260,9 +264,7 @@ export default function NewMatchForm() {
             style={[styles.teamName, { color: Colors.fuchsia }]}
             title={`${
               team1Country
-                ? Country.getAllCountries()?.find(
-                    (e) => e?.isoCode === team1Country
-                  )?.name
+                ? countriesList?.find((e) => e?.isoCode === team1Country)?.name
                 : '---'
             }`}
           />
@@ -279,9 +281,7 @@ export default function NewMatchForm() {
             style={styles.teamName}
             title={`${
               team2Country
-                ? Country.getAllCountries()?.find(
-                    (e) => e?.isoCode === team2Country
-                  )?.name
+                ? countriesList?.find((e) => e?.isoCode === team2Country)?.name
                 : '---'
             }`}
           />

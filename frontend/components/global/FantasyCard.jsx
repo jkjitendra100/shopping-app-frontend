@@ -1,15 +1,15 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import React from 'react';
-import { cardStyle } from '../../../styles/global';
-import { Colors } from '../../../theme/Colors';
-import { countriesList } from '../../../jsonFiles/countriesList';
+import { cardStyle } from '../../styles/global';
+import { Colors } from '../../theme/Colors';
+import { countriesList } from '../../jsonFiles/countriesList';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
-export default function MatchCard({
+export default function FantasyCard({
   team1Country,
   team2Country,
   matchTime,
-  matchName,
+  matchName = '---',
   sportName,
   onPress,
   createdAt = Date.now(),

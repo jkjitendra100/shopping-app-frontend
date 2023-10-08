@@ -7,28 +7,27 @@ import CancelButton from '../../global/CancelButton';
 import axios from 'axios';
 import { server } from '../../../server';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { Country, State, City } from 'country-state-city';
 import { bodyStyle, inputStyle } from '../../../styles/global';
 import { Picker } from '@react-native-picker/picker';
 import { sportsList } from '../../../jsonFiles/sportsList';
+import { countriesList } from '../../../jsonFiles/countriesList';
 
 export default function AddNewPlayer({ navigation }) {
   const [name, setName] = useState('');
-  const [game, setGame] = useState('');
-  const [team, setTeam] = useState('');
+  const [game, setGame] = useState('cricket');
+  // const [team, setTeam] = useState('');
   const [country, setCountry] = useState('IN');
   const [loading, setLoading] = useState(false);
 
   const addPlayerHandler = async () => {
     setLoading(true);
     try {
-      console.log(name, game, team, country);
       const data = await axios.post(
         `${server}/player/new`,
         {
           name,
           game,
-          team,
+          // team,
           country,
         },
         {
@@ -44,8 +43,8 @@ export default function AddNewPlayer({ navigation }) {
         text1: 'Success',
         text2: data?.data?.message,
       });
+      setName('');
       setLoading(false);
-      //   navigation.goBack();
     } catch (e) {
       setLoading(false);
       if (!e?.response) return alert('No network connection ⚠️');
@@ -66,11 +65,11 @@ export default function AddNewPlayer({ navigation }) {
           onChangeText={setName}
         />
 
-        <MyTextInput
+        {/* <MyTextInput
           placeholder="Enter Team*"
           value={team}
           onChangeText={setTeam}
-        />
+        /> */}
 
         <View style={[inputStyle, { padding: 0 }]}>
           <Picker
@@ -107,7 +106,7 @@ export default function AddNewPlayer({ navigation }) {
               value={''}
               style={{ fontSize: 14 }}
             />
-            {Country.getAllCountries()?.map((item) => (
+            {countriesList?.map((item) => (
               <Picker.Item
                 key={item?.isoCode}
                 label={item?.name}

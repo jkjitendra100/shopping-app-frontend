@@ -8,7 +8,7 @@ export default function PlayersList() {
   return (
     <>
       <Header back title="Players List" />
-      <View style={containerStyle}>
+      <View style={[containerStyle, { flex: 1 }]}>
         <PlayersData />
       </View>
     </>

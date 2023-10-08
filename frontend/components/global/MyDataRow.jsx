@@ -21,9 +21,10 @@ const styles = StyleSheet.create({
   },
 
   key: {
-    width: '30%',
+    width: '40%',
     fontWeight: '600',
     color: Colors.blue,
+    fontSize: 15,
   },
 
   colon: {
@@ -34,8 +35,10 @@ const styles = StyleSheet.create({
   },
 
   value: {
-    width: '65%',
+    width: '55%',
     textTransform: 'capitalize',
     color: Colors.indigo,
+    fontSize: 15,
+    textTransform: 'uppercase'
   },
 });
