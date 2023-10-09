@@ -5,11 +5,12 @@ import axios from 'axios';
 import { server } from '../../server';
 import { useNavigation } from '@react-navigation/native';
 import Loading from '../global/Loading';
+import { countriesList } from '../../jsonFiles/countriesList';
 
 export default function Fantasies() {
   const navigation = useNavigation();
   const [fantasiesList, setFantasiesList] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [sync, setSync] = useState(0);
 
@@ -40,7 +41,7 @@ export default function Fantasies() {
   }, [sync]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ height: '100%' }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -49,13 +50,26 @@ export default function Fantasies() {
       >
         {fantasiesList?.map((item, index) => (
           <FantasyCard
-            key={item?._id}
-            name={item?.fantasyName}
-            price={item?.fantasyPrice}
-            maxPlayers={item?.maxSelectablePlayers}
-            totalPlayers={item?.players.length}
-            onPress={() =>
-              navigation.navigate('fantasyDetails', { id: item?._id })
+            key={index}
+            matchName={item?.matchData?.matchName}
+            sportName={item?.matchData?.sportName}
+            matchTime={new Date(item?.matchData?.matchTime).toLocaleString(
+              'en-in'
+            )}
+            amount={item?.fantasyData?.amount}
+            paymentStatus={item?.fantasyData?.paymentStatus}
+            fantasyTime={new Date(item?.fantasyData?.createdAt)?.toLocaleString(
+              'en-In'
+            )}
+            team1Country={
+              countriesList?.find(
+                (e) => e?.isoCode === item?.matchData?.team1Country
+              )?.name
+            }
+            team2Country={
+              countriesList?.find(
+                (e) => e?.isoCode === item?.matchData?.team2Country
+              )?.name
             }
           />
         ))}

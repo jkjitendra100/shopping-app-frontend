@@ -3,12 +3,13 @@ import React from 'react';
 import { Colors } from '../../theme/Colors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MyDataRow from '../global/MyDataRow';
 
 export default function PlayerCard({
   name = 'Player Name',
   game,
-  team,
   country,
   createdAt,
   selectable = false,
@@ -18,6 +19,7 @@ export default function PlayerCard({
   user = false,
   flag,
 }) {
+
   return (
     <View style={[styles.container, style]}>
       {selectable && (
@@ -31,27 +33,68 @@ export default function PlayerCard({
       )}
       {!user && (
         <View style={{ position: 'relative' }}>
-          {flag && (
-            <Image
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: 15,
+              position: 'absolute',
+              right: -5,
+              bottom: -5,
+            }}
+          >
+            {flag && (
+              <Image
+                style={{
+                  width: 35,
+                  height: 35,
+                  resizeMode: 'contain',
+                }}
+                source={flag}
+              />
+            )}
+            <TouchableOpacity
               style={{
-                width: 40,
-                height: 40,
-                position: 'absolute',
-                bottom: -5,
-                right: -5,
-                resizeMode: 'contain',
+                padding: 5,
+                borderRadius: 100,
+                backgroundColor: '#dbeafe',
               }}
-              source={flag}
-            />
-          )}
+            >
+              <MaterialIcons name="mode-edit" size={25} color={Colors.blue} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                padding: 5,
+                borderRadius: 100,
+                backgroundColor: '#fee2e2',
+              }}
+            >
+              <MaterialCommunityIcons
+                name="delete"
+                size={25}
+                color={Colors.red}
+              />
+            </TouchableOpacity>
+          </View>
 
           {name && <MyDataRow label="Name" value={name} />}
 
           {game && <MyDataRow label="Sport" value={game} />}
 
           {country && <MyDataRow label="Country" value={country} />}
+          <View
+            style={{
+              borderWidth: 0.5,
+              borderColor: Colors.grayLight,
+              marginTop: 5,
+              marginBottom: 5,
+            }}
+          />
           {createdAt && (
-            <Text style={styles.createdAt}>Added On: {createdAt}</Text>
+            <View>
+              <Text style={{ fontSize: 10, marginLeft: 10 }}>Added On</Text>
+              <Text style={styles.createdAt}>{createdAt}</Text>
+            </View>
           )}
         </View>
       )}
@@ -93,7 +136,7 @@ const styles = StyleSheet.create({
   },
 
   createdAt: {
-    fontSize: 12,
+    fontSize: 14,
     color: Colors.rose,
     textAlign: 'left',
     marginLeft: 10,

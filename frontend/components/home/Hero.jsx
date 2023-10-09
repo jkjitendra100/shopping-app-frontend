@@ -17,7 +17,7 @@ const images = [
 
   {
     id: 'mlccnsdjowfiuweofew',
-    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvPNYT2_XNUP_6n8AAFPAZgnJTrWoz_t-uVg&usqp=CAU',
+    url: 'https://img1.hscicdn.com/image/upload/f_auto,t_ds_wide_w_1280,q_70/lsci/db/PICTURES/CMS/368400/368488.jpg',
   },
 
   {

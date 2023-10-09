@@ -134,7 +134,10 @@ export default function MatchData({ matchDetails, navigation }) {
               label="Match Time"
               value={new Date(matchDetails?.matchTime)?.toLocaleString('en-In')}
             />
-            <MyDataRow label="Entry Fee" value={matchDetails?.entryFee} />
+            <MyDataRow
+              label="Entry Fee"
+              value={`₹${matchDetails?.entryFee}/-`}
+            />
             <MyDataRow
               label="Max Team Players"
               value={matchDetails?.maxSelectablePlayers}

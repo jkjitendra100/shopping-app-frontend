@@ -54,7 +54,7 @@ export default function MatchesData() {
   let tempVar = 'assets/countries/pakistan.png';
 
   return (
-    <View style={{ flex: 1, marginHorizontal: 10 }}>
+    <View style={{ height: '100%' }}>
       <ScrollView
         style={{ marginTop: 5 }}
         refreshControl={
@@ -71,14 +71,12 @@ export default function MatchesData() {
               )}\n${new Date(item?.matchTime)?.toLocaleTimeString('en-In')}`}
               sportName={item?.sportName}
               team1Country={
-                countriesList?.find(
-                  (e) => e.isoCode === item?.team1Country
-                )?.name
+                countriesList?.find((e) => e.isoCode === item?.team1Country)
+                  ?.name
               }
               team2Country={
-                countriesList?.find(
-                  (e) => e.isoCode === item?.team2Country
-                )?.name
+                countriesList?.find((e) => e.isoCode === item?.team2Country)
+                  ?.name
               }
               onPress={() =>
                 navigation.navigate('matchDetails', { matchData: item })

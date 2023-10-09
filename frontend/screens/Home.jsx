@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import MatchesData from '../components/admin/matches/MatchesData';
 
 export default function HomeScreen() {
-
   return (
     <>
       <Header home title="Fantasy App" />

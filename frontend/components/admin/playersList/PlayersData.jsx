@@ -1,16 +1,23 @@
-import { StyleSheet, ScrollView, View, Text } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  RefreshControl,
+} from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import axios from 'axios';
 import { server } from '../../../server';
 import PlayerCard from '../../players/PlayerCard';
 import Loading from '../../global/Loading';
-import { bodyStyle, containerStyle } from '../../../styles/global';
 import { countriesList } from '../../../jsonFiles/countriesList';
 
 export default function PlayersData() {
   const [playersList, setPlayersList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [sync, setSync] = useState(false);
 
   useEffect(() => {
     const getPlayers = async () => {
@@ -21,9 +28,11 @@ export default function PlayersData() {
         });
 
         setLoading(false);
+        setRefreshing(false);
         setPlayersList(data.data);
       } catch (e) {
         setLoading(false);
+        setRefreshing(false);
         console.log(e);
         if (!e.response) return alert('No internet connection');
         Toast.show({
@@ -34,12 +43,22 @@ export default function PlayersData() {
       }
     };
     getPlayers();
+  }, [sync]);
+
+  const onRefresh = useCallback(() => {
+    setSync(sync + 1);
+    setRefreshing(true);
   }, []);
 
   return (
     <>
-      <View style={containerStyle}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={{ height: '100%' }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           {playersList?.map((item) => (
             <View key={item?._id} style={{ marginVertical: 5 }}>
               <PlayerCard

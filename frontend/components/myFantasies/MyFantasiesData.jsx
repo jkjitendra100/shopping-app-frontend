@@ -1,6 +1,7 @@
 import {
   StyleSheet,
   Text,
+  Alert,
   View,
   ScrollView,
   RefreshControl,
@@ -14,8 +15,10 @@ import Toast from 'react-native-toast-message';
 import Loading from '../global/Loading';
 import { useSelector } from 'react-redux';
 import { countriesList } from '../../jsonFiles/countriesList';
+import { useNavigation } from '@react-navigation/native';
 
 export default function MyFantasiesData() {
+  const navigation = useNavigation();
   const { user } = useSelector((state) => state.user);
   const [fantasies, setFantasies] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +26,24 @@ export default function MyFantasiesData() {
   const [sync, setSync] = useState(0);
 
   useEffect(() => {
-    if (!user?._id) return alert('Please login first to get your records');
+    if (!user?._id)
+      return Alert.alert(
+        'Alert ⚠️',
+        'Please login first to get your fantasies',
+        [
+          {
+            text: 'CANCEL',
+            onPress: () => {
+              setLoading(false);
+              setRefreshing(false);
+            },
+          },
+          {
+            text: 'LOGIN',
+            onPress: () => navigation.navigate('Login', { screen: 'login' }),
+          },
+        ]
+      );
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -73,6 +93,9 @@ export default function MyFantasiesData() {
             )}
             amount={item?.fantasyData?.amount}
             paymentStatus={item?.fantasyData?.paymentStatus}
+            fantasyTime={new Date(item?.fantasyData?.createdAt)?.toLocaleString(
+              'en-In'
+            )}
             team1Country={
               countriesList?.find(
                 (e) => e?.isoCode === item?.matchData?.team1Country

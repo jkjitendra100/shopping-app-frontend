@@ -15,6 +15,7 @@ export default function FantasyCard({
   createdAt = Date.now(),
   amount = 0,
   paymentStatus = 'Failed',
+  fantasyTime,
 }) {
   return (
     <TouchableOpacity style={[cardStyle, styles.container]} onPress={onPress}>
@@ -90,18 +91,37 @@ export default function FantasyCard({
         </View>
       </View>
 
-      <View style={{ flexDirection: 'row', gap: 10 }}>
-        <Text style={{ fontWeight: '600', color: Colors.black }}>
-          ₹{amount}/-
-        </Text>
-        <Text
-          style={{
-            fontWeight: '600',
-            color: paymentStatus === 'Succeeded' ? Colors.green : Colors.red,
-          }}
-        >
-          ({paymentStatus})
-        </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          gap: 10,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <View style={{ flexDirection: 'row', gap: 10 }}>
+          <Text style={{ fontWeight: '600', color: Colors.blue }}>
+            ₹{amount}/-
+          </Text>
+          <Text
+            style={{
+              fontWeight: '600',
+              color: paymentStatus === 'Succeeded' ? Colors.green : Colors.red,
+              textTransform: 'uppercase',
+            }}
+          >
+            [{paymentStatus}]
+          </Text>
+        </View>
+
+        <View>
+          <Text style={{ fontSize: 10, color: Colors.gray }}>
+            Team Created At.
+          </Text>
+          <Text style={{ color: Colors.blue, fontSize: 12 }}>
+            {fantasyTime}
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
