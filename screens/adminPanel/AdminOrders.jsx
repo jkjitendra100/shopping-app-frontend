@@ -2,42 +2,30 @@ import {
   StyleSheet,
   Text,
   View,
-  Alert,
   ScrollView,
   RefreshControl,
 } from 'react-native';
 import React, { useState, useEffect, useCallback } from 'react';
-import Header from '../components/global/Header';
-import { bodyStyle } from '../styles/global';
+import Header from '../../components/global/Header';
 import { useSelector } from 'react-redux';
+import { bodyStyle } from '../../styles/global';
+import OrderCard from '../../components/order/OrderCard';
 import axios from 'axios';
-import { server } from '../server';
+import { server } from '../../server';
 import Toast from 'react-native-toast-message';
-import OrderCard from '../components/order/OrderCard';
-import Loading from '../components/global/Loading';
 
-export default function MyOrders({ navigation }) {
-  const { isAuthenticated } = useSelector((state) => state?.user);
+export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [sync, setSync] = useState(0);
 
   useEffect(() => {
-    if (!isAuthenticated)
-      return Alert.alert('Alert !', 'Please login to get your data', [
-        { text: 'Back', onPress: () => navigation.goBack() },
-        {
-          text: 'Login',
-          onPress: () => navigation.navigate('Login', { screen: 'login' }),
-        },
-      ]);
-
     // Axios request
     setLoading(true);
     const fetchOrders = async () => {
       await axios
-        .get(`${server}/order/my`)
+        .get(`${server}/order/admin`)
         .then((res) => {
           setLoading(false);
           setRefreshing(false);
@@ -61,7 +49,7 @@ export default function MyOrders({ navigation }) {
 
   return (
     <>
-      <Header back title="My Orders" />
+      <Header back title="All Orders" />
       <View style={[bodyStyle, { flex: 1 }]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -81,13 +69,9 @@ export default function MyOrders({ navigation }) {
                 'en-In'
               )}
               image={{ uri: item?.orderItems[0]?.image }}
-              onPress={() =>
-                navigation.navigate('orderDetails', { order: item })
-              }
             />
           ))}
         </ScrollView>
-        {loading && <Loading />}
       </View>
     </>
   );

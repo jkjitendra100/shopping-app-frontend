@@ -11,7 +11,6 @@ import Header from '../components/global/Header';
 import { cardStyle } from '../styles/global';
 import { useNavigation } from '@react-navigation/native';
 import ProfileData from '../components/profile/ProfileData';
-import MyFantasy from '../components/profile/MyFantasy';
 import { useDispatch, useSelector } from 'react-redux';
 import MyButton from '../components/global/MyButton';
 import axios from 'axios';

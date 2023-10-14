@@ -10,6 +10,7 @@ export default function MyButton({
   loadingTitle = 'Processing please wait...',
   style,
   width,
+  icon,
 }) {
   return (
     <View style={{ width: width }}>
@@ -20,7 +21,10 @@ export default function MyButton({
         disabled={loading}
       >
         {!loading ? (
-          <Text style={styles.text}>{title}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <Text style={styles.text}>{title}</Text>
+            {icon}
+          </View>
         ) : (
           <View style={{ flexDirection: 'row', gap: 10 }}>
             <Text style={styles.loadingText}>{loadingTitle}</Text>
@@ -36,7 +40,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 15,
     backgroundColor: Colors.blue,
-    borderRadius: 10,
+    borderRadius: 0,
     paddingHorizontal: 20,
     minWidth: 100,
     flexDirection: 'row',

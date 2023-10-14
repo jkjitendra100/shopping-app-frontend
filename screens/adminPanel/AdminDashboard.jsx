@@ -19,13 +19,19 @@ export default function AdminDashboard() {
           />
 
           <DashboardCard
-            cardTitle="View All Products"
+            cardTitle="All Products"
             buttonTitle="Click here"
             onPress={() => navigation.navigate('adminProducts')}
           />
 
           <DashboardCard
-            cardTitle="View All Users"
+            cardTitle="All Orders"
+            buttonTitle="Click here"
+            onPress={() => navigation.navigate('adminOrders')}
+          />
+
+          <DashboardCard
+            cardTitle="All Users"
             buttonTitle="Click here"
             onPress={() => navigation.navigate('adminProducts')}
           />

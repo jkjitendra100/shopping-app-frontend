@@ -25,7 +25,7 @@ export default function ProfileData({ logoutHandler }) {
             marginTop: 10,
           }}
         >
-          FANTASY APP
+          KHELO JEETO
         </Text>
         <View style={styles.dataView}>
           <MyTitle
@@ -51,13 +51,13 @@ export default function ProfileData({ logoutHandler }) {
             }}
           >
             <Text style={{ fontWeight: 'bold', color: Colors.blue }}>
-              My Fantasies
+              My Orders
             </Text>
             <TouchableOpacity
               activeOpacity={0.7}
               style={{ backgroundColor: Colors.blue, borderRadius: 10 }}
               onPress={() =>
-                navigation.navigate('My Fantasies', { screen: 'myFantasies' })
+                navigation.navigate('My Orders', { screen: 'myOrders' })
               }
             >
               <Text

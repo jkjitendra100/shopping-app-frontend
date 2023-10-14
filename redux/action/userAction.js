@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { server } from '../store';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { useNavigation } from '@react-navigation/native';
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -23,8 +22,6 @@ export const login = (email, password) => async (dispatch) => {
         },
       }
     );
-
-    console.log('Data', data);
 
     dispatch({
       type: 'loginSuccess',

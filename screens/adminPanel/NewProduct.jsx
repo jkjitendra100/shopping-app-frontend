@@ -18,7 +18,10 @@ import { server } from '../../server';
 import Toast from 'react-native-toast-message';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Octicons from 'react-native-vector-icons/Octicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Colors } from '../../theme/Colors';
+import MyTitle from '../../components/global/MyTitle';
 
 export default function NewProduct() {
   const navigation = useNavigation();
@@ -27,6 +30,8 @@ export default function NewProduct() {
   const [price, setPrice] = useState(0);
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState('');
+  const [playerName, setPlayerName] = useState('');
+  const [players, setPlayers] = useState([]);
   const [images, setImages] = useState([]);
   //
   const [loading, setLoading] = useState(false);
@@ -35,7 +40,7 @@ export default function NewProduct() {
   const handlePickImages = async () => {
     if (images?.length === 5)
       return alert('You can select upto 5 images at a time.');
-    const options = { quality: 0.1, mediaType: 'photo' };
+    const options = { quality: 0.1, mediaType: 'photo', cropping: true };
     setImageLoading(true);
 
     const result = await launchImageLibrary(options);
@@ -94,6 +99,7 @@ export default function NewProduct() {
     formData.append('category', category);
     formData.append('subCategory', subCategory);
     images?.map((e, i) => formData.append('files', images[i]));
+    players.map((e, i) => formData.append(`players`, e.name));
 
     setLoading(true);
     await axios
@@ -106,7 +112,7 @@ export default function NewProduct() {
           type: 'success',
           text1: 'Product added successfully',
         });
-        console.log(res);
+        navigation.replace('adminDashboard');
       })
       ?.catch((e) => {
         setLoading(false);
@@ -116,8 +122,28 @@ export default function NewProduct() {
             text1: e?.response?.data?.message,
           });
         }
-        console.log(e?.message);
+        console.log(e);
       });
+  };
+
+  const handleAddPlayers = () => {
+    if (playerName?.length < 3) return alert('Player name is too sort');
+    if (
+      players?.find((e) => e?.name.toLowerCase() === playerName.toLowerCase())
+    )
+      return alert(`${playerName} already exists`);
+
+    let tempArr = [];
+    tempArr?.push({
+      name: playerName.trim(),
+    });
+    setPlayers((state) => [...tempArr, ...state]);
+    setPlayerName('');
+  };
+
+  const handleRemovePlayers = (player) => {
+    let tempArr = players?.filter((e) => e.name !== player.name);
+    return setPlayers(tempArr);
   };
 
   return (
@@ -161,6 +187,62 @@ export default function NewProduct() {
             placeholder="Enter product sub-category here"
           />
 
+          {/* Add Players */}
+          <MyTitle
+            title="Add Players"
+            style={{ marginTop: 20, marginBottom: -10 }}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: 10,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            <MyTextInput
+              title="Enter player name"
+              value={playerName}
+              onChangeText={setPlayerName}
+              placeholder="Enter player name here"
+              style={{ width: '160%' }}
+            />
+
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={{ marginTop: 20 }}
+              onPress={handleAddPlayers}
+            >
+              <Octicons name="diff-added" size={60} color={Colors.primary} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Map Players */}
+          {players?.length > 0 && (
+            <View style={{ margin: 10 }}>
+              {players?.map((item, index) => (
+                <View key={index} style={styles.playerMapView}>
+                  <Text
+                    style={{ textTransform: 'capitalize', fontWeight: 'bold' }}
+                  >{`${index + 1}. ${item.name}`}</Text>
+                  <TouchableOpacity onPress={() => handleRemovePlayers(item)}>
+                    <AntDesign
+                      name="closecircle"
+                      color={Colors.red}
+                      size={25}
+                    />
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Add Product Images */}
+          <MyTitle
+            title="Add Product Images"
+            style={{ marginTop: 20, marginBottom: -10 }}
+          />
           <View style={{ margin: 10 }}>
             <MyButton
               title="Add Images"
@@ -170,33 +252,28 @@ export default function NewProduct() {
             />
 
             {/* Map selected images */}
-            <View>
-              {images?.map((item, index) => (
-                <View style={styles.imageMapView} key={item?.name}>
-                  <Text
-                    style={{ color: Colors.secondary, fontWeight: 'bold' }}
-                  >{`${index + 1}. ${item?.name}`}</Text>
-                  <TouchableOpacity
-                    onPress={() => handleRemoveImage(item?.name)}
-                  >
-                    <Entypo
-                      name="circle-with-cross"
-                      size={25}
-                      color={Colors.red}
-                    />
-                  </TouchableOpacity>
-                </View>
-              ))}
-            </View>
+            {images.length > 0 && (
+              <View>
+                {images?.map((item, index) => (
+                  <View style={styles.imageMapView} key={item?.name}>
+                    <Text style={{ fontWeight: 'bold' }}>{`${index + 1}. ${
+                      item?.name
+                    }`}</Text>
+                    <TouchableOpacity
+                      onPress={() => handleRemoveImage(item?.name)}
+                    >
+                      <Entypo
+                        name="circle-with-cross"
+                        size={25}
+                        color={Colors.red}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
+            )}
 
-            <View
-              style={{
-                flexDirection: 'column',
-                marginTop: 50,
-                marginBottom: 20,
-                gap: 30,
-              }}
-            >
+            <View style={styles.buttonsView}>
               <MyButton
                 width={'100%'}
                 title="SUBMIT"
@@ -222,9 +299,26 @@ const styles = StyleSheet.create({
     gap: 10,
     alignItems: 'center',
     padding: 10,
-    margin: 5,
+    margin: 2,
     borderWidth: 1,
-    borderColor: Colors.secondary,
-    borderRadius: 5,
+    borderColor: Colors.grayLight,
+  },
+
+  playerMapView: {
+    borderWidth: 1,
+    borderColor: Colors.grayLight,
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
+    padding: 10,
+    margin: 2,
+    justifyContent: 'space-between',
+  },
+
+  buttonsView: {
+    flexDirection: 'column',
+    marginTop: 50,
+    marginBottom: 20,
+    gap: 30,
   },
 });

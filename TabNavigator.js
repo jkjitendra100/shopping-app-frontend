@@ -22,6 +22,10 @@ import MyOrders from './screens/MyOrders';
 import NewProduct from './screens/adminPanel/NewProduct';
 import UpdateProduct from './screens/adminPanel/UpdateProduct';
 import AdminProducts from './screens/adminPanel/AdminProducts';
+import ProductDetails from './screens/ProductDetails';
+import ConfirmOrder from './screens/ConfirmOrder';
+import AdminOrders from './screens/adminPanel/AdminOrders';
+import OrderDetails from './screens/OrderDetails';
 
 const HomeStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
@@ -32,7 +36,7 @@ const Tab = createBottomTabNavigator();
 function HomeStackScreens() {
   return (
     <HomeStack.Navigator screenOptions={{ contentStyle: { marginBottom: 55 } }}>
-      <ProfileStack.Group>
+      <HomeStack.Group>
         <HomeStack.Screen
           name="home"
           component={Home}
@@ -41,12 +45,30 @@ function HomeStackScreens() {
             animation: 'fade_from_bottom',
           }}
         />
-      </ProfileStack.Group>
+
+        <HomeStack.Screen
+          name="productDetails"
+          component={ProductDetails}
+          options={{
+            headerShown: false,
+            animation: 'fade_from_bottom',
+          }}
+        />
+
+        <HomeStack.Screen
+          name="confirmOrder"
+          component={ConfirmOrder}
+          options={{
+            headerShown: false,
+            animation: 'fade_from_bottom',
+          }}
+        />
+      </HomeStack.Group>
     </HomeStack.Navigator>
   );
 }
 
-function MyFantasiesStack() {
+function MyOrderStack() {
   return (
     <PlayerStack.Navigator
       screenOptions={{ contentStyle: { marginBottom: 55 } }}
@@ -55,6 +77,15 @@ function MyFantasiesStack() {
         <PlayerStack.Screen
           name="myOrders"
           component={MyOrders}
+          options={{
+            headerShown: false,
+            animation: 'fade_from_bottom',
+          }}
+        />
+
+        <PlayerStack.Screen
+          name="orderDetails"
+          component={OrderDetails}
           options={{
             headerShown: false,
             animation: 'fade_from_bottom',
@@ -143,6 +174,15 @@ function AdminStackScreens() {
             animation: 'fade_from_bottom',
           }}
         />
+
+        <AdminStack.Screen
+          name="adminOrders"
+          component={AdminOrders}
+          options={{
+            headerShown: false,
+            animation: 'fade_from_bottom',
+          }}
+        />
       </AdminStack.Group>
     </AdminStack.Navigator>
   );
@@ -167,17 +207,17 @@ export default function TabNavigator() {
             type: 'myProfileSuccess',
             payload: response?.data?.user,
           });
+
+          dispatch({
+            type: 'updateCart',
+            payload: response?.data?.user?.cart,
+          });
         })
         .catch((e) => {
           console.log(e);
           dispatch({
             type: 'myProfileFail',
           });
-          // Toast.show({
-          //   type: 'error',
-          //   text1: 'Error',
-          //   text2: e?.response?.data?.message,
-          // });
         });
     };
 
@@ -201,11 +241,11 @@ export default function TabNavigator() {
 
             switch (route.name) {
               case 'Home':
-                iconName = focused ? 'home' : 'home-outline';
+                iconName = focused ? 'home' : 'home';
                 return <Ionicons name={iconName} size={25} color={color} />;
 
               case 'Profile':
-                iconName = focused ? 'user' : 'user-o';
+                iconName = focused ? 'user' : 'user';
                 return <FontAwesome name={iconName} size={25} color={color} />;
 
               case 'Login':
@@ -218,15 +258,9 @@ export default function TabNavigator() {
                   />
                 );
 
-              case 'My Fantasies':
-                iconName = focused ? 'gamepad' : 'gamepad-outline';
-                return (
-                  <MaterialCommunityIcons
-                    name={iconName}
-                    size={25}
-                    color={color}
-                  />
-                );
+              case 'My Orders':
+                iconName = focused ? 'first-order' : 'first-order';
+                return <FontAwesome name={iconName} size={25} color={color} />;
 
               case 'Admin':
                 iconName = focused ? 'user-tie' : 'user-tie';
@@ -250,8 +284,8 @@ export default function TabNavigator() {
             }}
           />
           <Tab.Screen
-            name="My Fantasies"
-            component={MyFantasiesStack}
+            name="My Orders"
+            component={MyOrderStack}
             options={{
               headerShown: false,
               animation: 'fade_from_bottom',
